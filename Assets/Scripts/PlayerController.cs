@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour {
 	float xmin;
 	float xmax;
 	public float padding = 1f;
+	public GameObject projectile;
+	public float projectileSpeed;
+	public float firingRate = 1.2f;
 
 	// Use this for initialization
 	void Start () {
@@ -17,6 +20,11 @@ public class PlayerController : MonoBehaviour {
 		xmin = leftmost.x + padding;
 		xmax = rightmost.x -padding;
 		
+	}
+	
+	void Fire() {
+		GameObject beam = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
+		beam.GetComponent<Rigidbody2D>().velocity = new Vector3(0, projectileSpeed, 0);
 	}
 	
 	// Update is called once per frame
@@ -33,7 +41,15 @@ public class PlayerController : MonoBehaviour {
 		float newX = Mathf.Clamp(transform.position.x, xmin, xmax);
 		
 		transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+		
+		if (Input.GetKeyDown(KeyCode.Space)) {
+			InvokeRepeating("Fire", 0.000001f, firingRate);
+		}
+		if (Input.GetKeyUp(KeyCode.Space)) {
+			CancelInvoke("Fire");
+		}
 	}
 	
+		
 	
 }
