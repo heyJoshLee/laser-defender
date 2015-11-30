@@ -65,10 +65,16 @@ public class PlayerController : MonoBehaviour {
 			health -= missle.GetDamage();
 			missle.Hit();
 			if (health<= 0) {
-				Destroy(gameObject);
+				Die();
 			}
 			
 		}
+	}
+	
+	void Die() {
+		Destroy(gameObject);
+		LevelManager man = GameObject.Find("Level Manager").GetComponent<LevelManager>();
+		man.LoadNextLevel();
 	}
 	
 		
